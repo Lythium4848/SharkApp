@@ -3,19 +3,22 @@ package dev.lythium.sharkapp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,11 +58,6 @@ fun SharkTitle(modifier: Modifier = Modifier) {
     }
 }
 
-data class SharkItem(
-    val name: String,
-    val imageUrl: String,
-)
-
 @Composable
 fun SharkElement(SharkItem: SharkItem, modifier: Modifier = Modifier) {
     Box(
@@ -68,15 +66,14 @@ fun SharkElement(SharkItem: SharkItem, modifier: Modifier = Modifier) {
     ) {
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .offset(y = 16.dp),
+                .fillMaxSize(),
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 1.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(16.dp, 8.dp, 16.dp, 4.dp)
             ) {
                 Text(
                     text = SharkItem.name,
@@ -84,9 +81,66 @@ fun SharkElement(SharkItem: SharkItem, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp)
                 )
                 SharkImage(image = SharkItem.imageUrl)
+                SharkVotes(SharkItem)
+            }
+        }
+    }
+}
+
+@Composable
+fun SharkVotes(shark: SharkItem) {
+    Box(
+    ) {
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Row() {
+                TextButton(
+                    onClick = {
+                        shark.upVote()
+                        println(shark.votes.value.upVotes.toString() + " " + shark.votes.value.downVotes.toString())
+
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowUp,
+                        contentDescription = "Upvote",
+                    )
+                    Text(
+                        text = shark.votes.value.upVotes.toString(),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+            ) {
+                TextButton(
+                    onClick = {
+                        shark.downVote()
+
+                        println(shark.votes.value.upVotes.toString() + " " + shark.votes.value.downVotes.toString())
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Down-vote",
+                    )
+                    Text(
+                        text = shark.votes.value.downVotes.toString(),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(4.dp, 2.dp)
+                    )
+                }
             }
         }
     }
@@ -116,15 +170,15 @@ fun SharkImage(image: String, modifier: Modifier = Modifier) {
     )
 }
 
-//val SharkImageUrls = listOf(
-//    "https://www.wallpaperup.com/uploads/wallpapers/2015/04/23/669391/9e5d0e99436486d99d84c2d2f8cb1c69.jpg",
-//    "https://wallup.net/wp-content/uploads/2016/01/201579-animals-fish-sea-shark.jpg",
-//    "https://weknowyourdreams.com/images/shark/shark-02.jpg",
-//    "https://www.wallpaperama.com/post-images/wallpapers/aquarium/great-white-shark.jpg",
-//    "https://wallup.net/wp-content/uploads/2016/12/08/272886-shark-Great_White_Shark-sea.jpg",
-//    "https://www.pixelstalk.net/wp-content/uploads/2016/05/HD-Great-White-Shark-Wallpaper.jpg",
-//    "https://www.deepblu.com/mag/wp-content/uploads/2020/05/Mako-Shark.jpg",
-//)
+val SharkImageUrls = listOf(
+    "https://www.wallpaperup.com/uploads/wallpapers/2015/04/23/669391/9e5d0e99436486d99d84c2d2f8cb1c69.jpg",
+    "https://wallup.net/wp-content/uploads/2016/01/201579-animals-fish-sea-shark.jpg",
+    "https://weknowyourdreams.com/images/shark/shark-02.jpg",
+    "https://www.wallpaperama.com/post-images/wallpapers/aquarium/great-white-shark.jpg",
+    "https://wallup.net/wp-content/uploads/2016/12/08/272886-shark-Great_White_Shark-sea.jpg",
+    "https://www.pixelstalk.net/wp-content/uploads/2016/05/HD-Great-White-Shark-Wallpaper.jpg",
+    "https://www.deepblu.com/mag/wp-content/uploads/2020/05/Mako-Shark.jpg",
+)
 
 @Composable
 fun SharkList(modifier: Modifier = Modifier) {
@@ -133,6 +187,8 @@ fun SharkList(modifier: Modifier = Modifier) {
     LaunchedEffect(key1 = Unit) {
         listState.animateScrollToItem(index = 0)
     }
+
+    SharkRepository.addItem(SharkItem("Shark", SharkImageUrls.random()))
 
     LazyColumn(
         modifier = modifier
