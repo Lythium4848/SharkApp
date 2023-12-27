@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Shark App</string>
+    <string name="Shark">Shark</string>
+    <string name="Shark_fab_description">Shark FAB Description</string>
+    <string name="add_shark">Add Shark</string>
+    <string name="new_shark">New Shark</string>
+    <string name="create">Create</string>
+    <string name="name">Name</string>
+    <string name="image_url">Image Url</string>
+</resources>
