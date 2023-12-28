@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 android {
@@ -69,4 +70,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

@@ -76,7 +76,7 @@ fun SharkElement(SharkItem: SharkItem, modifier: Modifier = Modifier) {
                     .padding(16.dp, 8.dp, 16.dp, 4.dp)
             ) {
                 Text(
-                    text = SharkItem.name,
+                    text = SharkItem.title,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -102,8 +102,6 @@ fun SharkVotes(shark: SharkItem) {
                 TextButton(
                     onClick = {
                         shark.upVote()
-                        println(shark.votes.value.upVotes.toString() + " " + shark.votes.value.downVotes.toString())
-
                     }
                 ) {
                     Icon(
@@ -111,7 +109,7 @@ fun SharkVotes(shark: SharkItem) {
                         contentDescription = "Upvote",
                     )
                     Text(
-                        text = shark.votes.value.upVotes.toString(),
+                        text = shark.upvotesCount.intValue.toString(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -125,8 +123,6 @@ fun SharkVotes(shark: SharkItem) {
                 TextButton(
                     onClick = {
                         shark.downVote()
-
-                        println(shark.votes.value.upVotes.toString() + " " + shark.votes.value.downVotes.toString())
                     }
                 ) {
                     Icon(
@@ -134,7 +130,7 @@ fun SharkVotes(shark: SharkItem) {
                         contentDescription = "Down-vote",
                     )
                     Text(
-                        text = shark.votes.value.downVotes.toString(),
+                        text = shark.downvotesCount.intValue.toString(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -187,8 +183,6 @@ fun SharkList(modifier: Modifier = Modifier) {
     LaunchedEffect(key1 = Unit) {
         listState.animateScrollToItem(index = 0)
     }
-
-    SharkRepository.addItem(SharkItem("Shark", SharkImageUrls.random()))
 
     LazyColumn(
         modifier = modifier

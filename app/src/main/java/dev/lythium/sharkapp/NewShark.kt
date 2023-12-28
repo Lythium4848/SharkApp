@@ -93,9 +93,9 @@ fun NewSharkForm(navController: NavController) {
             ) {
                 Button(
                     onClick = {
-                        val newItem = SharkItem(sharkName, sharkImageUrl)
-                        SharkRepository.addItem(newItem)
-                        navController.navigate("sharkList")
+//                        val newItem = SharkItem(sharkName, sharkImageUrl)
+//                        SharkRepository.addItem(newItem)
+//                        navController.navigate("sharkList")
                     },
                     modifier = Modifier.padding(8.dp)
                 ) {
